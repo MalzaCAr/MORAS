@@ -1,0 +1,95 @@
+CHIP RoundToPow
+{
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    //65536 32768 16384 8192 4096 2048 1024 512 256 128 64 32 16 8 4 2 1
+    // 16    15    14    13   12   11   10   9   8   7  6  5  4  3 2 1 0
+
+    //example:
+    //1025
+    //binary:
+    //0000010000000001
+    //     ^
+    //we're looking for the most significant 1. That's our power, since 1024 in this example is 000010000000000,
+    //aka just the most significant 1.
+    //example: 999
+    //0000001111100111
+    //512:
+    //0000001000000000
+
+    Or(a = in[15], b = in[14], out = or1);
+    Or(a = or1, b = in[13], out = or2);
+    Or(a = or2, b = in[12], out = or3);
+    Or(a = or3, b = in[11], out = or4);
+    Or(a = or4, b = in[10], out = or5);
+    Or(a = or5, b = in[9], out = or6);
+    Or(a = or6, b = in[8], out = or7);
+    Or(a = or7, b = in[7], out = or8);
+    Or(a = or8, b = in[6], out = or9);
+    Or(a = or9, b = in[5], out = or10);
+    Or(a = or10, b = in[4], out = or11);
+    Or(a = or11, b = in[3], out = or12);
+    Or(a = or12, b = in[2], out = or13);
+    Or(a = or13, b = in[1], out = or14);
+    Or(a = or14, b = in[0], out = or15);
+
+    Not(in = in[15], out = nin15);
+    Not(in = or1, out = nor1);
+    Not(in = or2, out = nor2);
+    Not(in = or3, out = nor3);
+    Not(in = or4, out = nor4);
+    Not(in = or5, out = nor5);
+    Not(in = or6, out = nor6);
+    Not(in = or7, out = nor7);
+    Not(in = or8, out = nor8);
+    Not(in = or9, out = nor9);
+    Not(in = or10, out = nor10);
+    Not(in = or11, out = nor11);
+    Not(in = or12, out = nor12);
+    Not(in = or13, out = nor13);
+    Not(in = or14, out = nor14);
+    Not(in = or15, out = nor15);
+
+    //Here we AND a bit and the NOT of OR of all bits ahead of it.
+    //if any 1 shows up ahead of the bit, that means it's not the most significant 1.
+    Or(a = false, b = in[15], out = out16);
+    And(a = in[14], b = nin15, out = out15);
+    And(a = in[13], b = nor1, out = out14);
+    And(a = in[12], b = nor2, out = out13);
+    And(a = in[11], b = nor3, out = out12);
+    And(a = in[10], b = nor4, out = out11);
+    And(a = in[9], b = nor5, out = out10);
+    And(a = in[8], b = nor6, out = out9);
+    And(a = in[7], b = nor7, out = out8);
+    And(a = in[6], b = nor8, out = out7);
+    And(a = in[5], b = nor9, out = out6);
+    And(a = in[4], b = nor10, out = out5);
+    And(a = in[3], b = nor11, out = out4);
+    And(a = in[2], b = nor12, out = out3);
+    And(a = in[1], b = nor13, out = out2);
+    And(a = in[0], b = nor14, out = out1);
+
+    //now we output the most significant 1. That's our number rounded to the closest power of 2.
+    Or16(
+        a = false, 
+        b[0] = out1,
+        b[1] = out2,
+        b[2] = out3,
+        b[3] = out4,
+        b[4] = out5,
+        b[5] = out6,
+        b[6] = out7,
+        b[7] = out8,
+        b[8] = out9,
+        b[9] = out10,
+        b[10] = out11,
+        b[11] = out12,
+        b[12] = out13,
+        b[13] = out14,
+        b[14] = out15,
+        b[15] = out16,
+        out = out
+    );
+}

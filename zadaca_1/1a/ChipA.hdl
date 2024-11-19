@@ -1,0 +1,9 @@
+CHIP ChipA
+{
+    IN x, y;
+    OUT out;
+
+    PARTS:
+    And(a = x, b = y, out = andOut);
+    Not(in = andOut, out = out);
+}

@@ -1,0 +1,104 @@
+CHIP Clz
+{
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    //example: 4200
+    //0001000001101000
+    //I wanna turn this into:
+    //1110000000000000
+    //I need to check for every bit if there is a 1 ahead of it.
+    //So for the first bit it would be 
+    //NOT(in[0]) AND NOT(in[1] OR in[2] OR ... OR in[15]);
+    //...
+    //NOT(in[13]) AND NOT(in[14] or in[15]);
+    //NOT(in[14]) AND NOT(in[15]);
+    //NOT(in[15]);
+
+    Or(a = in[14], b = in[15], out = or1);
+    Or(a = or1, b = in[13], out = or2);
+    Or(a = or2, b = in[12], out = or3);
+    Or(a = or3, b = in[11], out = or4);
+    Or(a = or4, b = in[10], out = or5);
+    Or(a = or5, b = in[9], out = or6);
+    Or(a = or6, b = in[8], out = or7);
+    Or(a = or7, b = in[7], out = or8);
+    Or(a = or8, b = in[6], out = or9);
+    Or(a = or9, b = in[5], out = or10);
+    Or(a = or10, b = in[4], out = or11);
+    Or(a = or11, b = in[3], out = or12);
+    Or(a = or12, b = in[2], out = or13);
+    Or(a = or13, b = in[1], out = or14);
+
+    Not(in = or1, out = nor1);
+    Not(in = or2, out = nor2);
+    Not(in = or3, out = nor3);
+    Not(in = or4, out = nor4);
+    Not(in = or5, out = nor5);
+    Not(in = or6, out = nor6);
+    Not(in = or7, out = nor7);
+    Not(in = or8, out = nor8);
+    Not(in = or9, out = nor9);
+    Not(in = or10, out = nor10);
+    Not(in = or11, out = nor11);
+    Not(in = or12, out = nor12);
+    Not(in = or13, out = nor13);
+    Not(in = or14, out = nor14);
+    
+    Not(in = in[15], out = nin15);
+    Not(in = in[14], out = nin14);
+    Not(in = in[13], out = nin13);
+    Not(in = in[12], out = nin12);
+    Not(in = in[11], out = nin11);
+    Not(in = in[10], out = nin10);
+    Not(in = in[9], out = nin9);
+    Not(in = in[8], out = nin8);
+    Not(in = in[7], out = nin7);
+    Not(in = in[6], out = nin6);
+    Not(in = in[5], out = nin5);
+    Not(in = in[4], out = nin4);
+    Not(in = in[3], out = nin3);
+    Not(in = in[2], out = nin2);
+    Not(in = in[1], out = nin1);
+    Not(in = in[0], out = nin0);
+    
+    //here we turn, in the example above, 
+    //0001000001101000
+    //into
+    //1110000000000000
+    And(a = nin0, b = nor14, out = count0);
+    And(a = nin1, b = nor13, out = count1);
+    And(a = nin2, b = nor12, out = count2);
+    And(a = nin3, b = nor11, out = count3);
+    And(a = nin4, b = nor10, out = count4);
+    And(a = nin5, b = nor9, out = count5);
+    And(a = nin6, b = nor8, out = count6);
+    And(a = nin7, b = nor7, out = count7);
+    And(a = nin8, b = nor6, out = count8);
+    And(a = nin9, b = nor5, out = count9);
+    And(a = nin10, b = nor4, out = count10);
+    And(a = nin11, b = nor3, out = count11);
+    And(a = nin12, b = nor2, out = count12);
+    And(a = nin13, b = nor1, out = count13);
+    And(a = nin14, b = nin15, out = count14);
+    Or(a = false, b = nin15, out = count15);
+
+    //now we count up the 1s:
+    Add16(a = false, b[0] = count0, b[1..15] = false, out = out0);
+    Add16(a = out0, b[0] = count1, b[1..15] = false, out = out1);
+    Add16(a = out1, b[0] = count2, b[1..15] = false, out = out2);
+    Add16(a = out2, b[0] = count3, b[1..15] = false, out = out3);
+    Add16(a = out3, b[0] = count4, b[1..15] = false, out = out4);
+    Add16(a = out4, b[0] = count5, b[1..15] = false, out = out5);
+    Add16(a = out5, b[0] = count6, b[1..15] = false, out = out6);
+    Add16(a = out6, b[0] = count7, b[1..15] = false, out = out7);
+    Add16(a = out7, b[0] = count8, b[1..15] = false, out = out8);
+    Add16(a = out8, b[0] = count9, b[1..15] = false, out = out9);
+    Add16(a = out9, b[0] = count10, b[1..15] = false, out = out10);
+    Add16(a = out10, b[0] = count11, b[1..15] = false, out = out11);
+    Add16(a = out11, b[0] = count12, b[1..15] = false, out = out12);
+    Add16(a = out12, b[0] = count13, b[1..15] = false, out = out13);
+    Add16(a = out13, b[0] = count14, b[1..15] = false, out = out14);
+    Add16(a = out14, b[0] = count15, b[1..15] = false, out = out);
+}

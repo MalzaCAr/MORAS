@@ -1,0 +1,47 @@
+CHIP Diff
+{
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    //example:
+    //0000001010101010 
+    //0000000000100111
+    //Xor gives a 1 only if there is a difference in the bits, in this example:
+    //0000001010001101
+
+    Xor(a = a[0], b = b[0], out = xOut0);
+    Xor(a = a[1], b = b[1], out = xOut1);
+    Xor(a = a[2], b = b[2], out = xOut2);
+    Xor(a = a[3], b = b[3], out = xOut3);
+    Xor(a = a[4], b = b[4], out = xOut4);
+    Xor(a = a[5], b = b[5], out = xOut5);
+    Xor(a = a[6], b = b[6], out = xOut6);
+    Xor(a = a[7], b = b[7], out = xOut7);
+    Xor(a = a[8], b = b[8], out = xOut8);
+    Xor(a = a[9], b = b[9], out = xOut9);
+    Xor(a = a[10], b = b[10], out = xOut10);
+    Xor(a = a[11], b = b[11], out = xOut11);
+    Xor(a = a[12], b = b[12], out = xOut12);
+    Xor(a = a[13], b = b[13], out = xOut13);
+    Xor(a = a[14], b = b[14], out = xOut14);
+    Xor(a = a[15], b = b[15], out = xOut15);
+
+    //Then we just count up the 1s. That's the number of differences:
+    Add16(a = false, b[0] = xOut0, b[1..15] = false, out = out1);
+    Add16(a = out1, b[0] = xOut1, b[1..15] = false, out = out2);
+    Add16(a = out2, b[0] = xOut2, b[1..15] = false, out = out3);
+    Add16(a = out3, b[0] = xOut3, b[1..15] = false, out = out4);
+    Add16(a = out4, b[0] = xOut4, b[1..15] = false, out = out5);
+    Add16(a = out5, b[0] = xOut5, b[1..15] = false, out = out6);
+    Add16(a = out6, b[0] = xOut6, b[1..15] = false, out = out7);
+    Add16(a = out7, b[0] = xOut7, b[1..15] = false, out = out8);
+    Add16(a = out8, b[0] = xOut8, b[1..15] = false, out = out9);
+    Add16(a = out9, b[0] = xOut9, b[1..15] = false, out = out10);
+    Add16(a = out10, b[0] = xOut10, b[1..15] = false, out = out11);
+    Add16(a = out11, b[0] = xOut11, b[1..15] = false, out = out12);
+    Add16(a = out12, b[0] = xOut12, b[1..15] = false, out = out13);
+    Add16(a = out13, b[0] = xOut13, b[1..15] = false, out = out14);
+    Add16(a = out14, b[0] = xOut14, b[1..15] = false, out = out15);
+    Add16(a = out15, b[0] = xOut15, b[1..15] = false, out = out);
+}
