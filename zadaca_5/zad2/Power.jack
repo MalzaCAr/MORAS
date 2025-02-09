@@ -1,0 +1,52 @@
+class Power {
+	function int calculate(int a, int b) {
+		var int i, x;
+		let i = 0;
+		let x = 1;
+		while (i < b) {
+			let x = x * a;
+			let i = i + 1;
+		}
+		return x;
+	}
+	
+	function Array qsort(Array A, int n) {
+		var int i_a, i_b, i, pivot;
+		var Array lt, gt;
+		if(n < 2) { 
+			return A;
+		}
+		let i_a = 0;
+		let i_b = 0;
+		let lt = Array.new(n);
+		let gt = Array.new(n);
+		let i = 1;
+		let pivot = A[0];
+		while(i < n) {
+			if(A[i] < pivot) {
+				let lt[i_a] = A[i];
+				let i_a = i_a + 1;
+			}
+			else {
+				let gt[i_b] = A[i];
+				let i_b = i_b + 1;
+			}
+			let i = i + 1;
+		}
+		let lt = Power.qsort(lt, i_a);
+		let gt = Power.qsort(gt, i_b);
+		
+		let i = 0;
+		while(i < i_a) {
+			let A[i] = lt[i];
+			let i = i + 1;
+		}
+		let A[i_a] = pivot;
+		let i = 0;
+		while(i < i_b) {
+			let A[i_a + 1 + i] = gt[i];
+			let i = i + 1;
+		}
+		return A;
+	}
+}
